@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sanxia.javaapi.dao.ElectricDao">
+    <select id="queryElectric" resultType="com.sanxia.javaapi.domain.Electric">
+        SELECT
+            *
+        FROM
+            t_electric
+    </select>
+
+    <insert id="insertElectric" parameterType="com.sanxia.javaapi.domain.Electric">
+        INSERT INTO t_electric(
+          number,
+          switch_no,
+          time,
+          electric_a,
+          electric_b,
+          electric_c
+        )
+        VALUES
+        (
+          #{number},
+          #{switchNo},
+          #{time},
+          #{electricA},
+          #{electricB},
+          #{electricC}
+        )
+    </insert>
+
+    <select id="queryInnerTemp" resultType="com.sanxia.javaapi.domain.InnerTempModel">
+        SELECT t1.number,
+               t1.switch_no,
+               t1.time,
+               t1.electric_a + t2.temperature_a as innertemp_a,
+               t1.electric_b + t2.temperature_b as innertemp_b,
+               t1.electric_b + t2.temperature_c as innertemp_c
+        FROM
+               t_electric as t1
+        LEFT JOIN
+               t_temperature as t2
+        ON
+               t1.number = t2.number
+
+    </select>
+</mapper>
